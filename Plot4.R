@@ -1,8 +1,8 @@
 file <- read.csv("household_power_consumption.txt", header=T, sep=';', na.strings="?")
 data <- subset(file, Date %in% c("1/2/2007","2/2/2007"))
 data$Date <- as.Date(data$Date, format="%d/%m/%Y")
-datatime <- paste(as.Date(data$Date), data$Time)
-data$datatime <- as.POSIXct(datatime)
+datatime <- paste(as.Date(data$Date), data$Time) # I used paste and POSIXct instead of strptime() as I find it easier than the other one.
+data$datatime <- as.POSIXct(datatime) # Also datatime <- strptime(paste(data$Date, data$Time, sep=" "), "%d/%m/%Y %H:%M:%S") can be used
 gap <- data$Global_active_power
 # To make multiple graph
 png("plot4.png", width=480, height=480)
@@ -19,5 +19,5 @@ with(data, {
 with(data, {
   plot(Global_reactive_power ~ datatime, type = "l", ylab = "Global Reactive Power (kilowatts)", xlab = "")
 })
-dev.copy(png, file="plot4.png")
+dev.copy(png, file="plot4.png", height = 480, width = 480)
 dev.off()
